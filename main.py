@@ -28,4 +28,9 @@ def detail(id):
         abort(404)
 
 
+@app.errorhandler(404)
+def not_found(error):
+    return render_template('not_found.html'), 404
+
+
 app.run(debug=True)
