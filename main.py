@@ -9,6 +9,7 @@ app = Flask(__name__)
 engine = create_engine('sqlite:///./data/habcat.sqlite')
 Session = sessionmaker(bind=engine)
 
+
 @app.route('/')
 def home():
     session = Session()
