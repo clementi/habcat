@@ -1,5 +1,30 @@
 {% extends 'layout.html' %}
 {% block title %}Welcome{% endblock %}
 {% block content %}
-Welcome to HabCat
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Hipparcos</th>
+                    <th>RA (hms)</th>
+                    <th>Dec (dms)</th>
+                    <th>Mag</th>
+                    <th>Dist (pc)</th>
+                    <th>B &ndash; V</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for habstar in random_habstars %}
+                    <tr>
+                        <td><a href="{{ url_for('detail', id=habstar.hipparchos_num) }}">{{ habstar.hipparchos_num }}</a></td>
+                        <td>{{ "%02d" | format(habstar.ra_hours) }} {{ "%02d" | format(habstar.ra_minutes) }} {{ "%02.2f" | format(habstar.ra_seconds) }}</td>
+                        <td>{{ "%02d" | format(habstar.dec_degrees) }} {{ "%02d" | format(habstar.dec_minutes) }} {{ "%02.2f" | format(habstar.dec_seconds) }}</td>
+                        <td>{{ habstar.johnson_mag }}</td>
+                        <td>{{ "%.2f" | format(1000.0 / habstar.parallax_mas) }}</td>
+                        <td>{{ habstar.b_minus_v }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

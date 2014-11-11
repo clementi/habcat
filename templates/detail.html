@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+{% block title %}Hipparcos {{ habstar.hipparchos_num }}{% endblock %}
+{% block content %}
+    <div class="container">
+        <h2>Hipparcos {{ habstar.hipparchos_num }}</h2>
+        <div class="form-horizontal">
+            <div class="form-group">
+                <span class="control-label col-sm-2">RA</span>
+                <div class="col-sm-10">
+                    <span class="form-control">{{ habstar.ra_hours }} {{ habstar.ra_minutes }} {{ habstar.ra_seconds }}</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <span class="control-label col-sm-2">Dec</span>
+                <div class="col-sm-10">
+                    <span class="form-control">{{ habstar.dec_degrees }} {{ habstar.dec_minutes }} {{ habstar.dec_seconds }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
