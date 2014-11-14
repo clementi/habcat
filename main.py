@@ -1,7 +1,7 @@
 from flask import Flask, abort, render_template
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.sql.expression import func
+
 from models import Habstar
 
 
@@ -13,9 +13,9 @@ Session = sessionmaker(bind=engine)
 @app.route('/')
 def home():
     session = Session()
-    random_habstars = session.query(Habstar).order_by(func.random()).limit(5)
+    habstars = session.query(Habstar).limit(25)
 
-    return render_template('index.html', random_habstars=random_habstars)
+    return render_template('index.html', habstars=habstars)
 
 
 @app.route('/habstar/<id>')

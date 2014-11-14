@@ -18,3 +18,7 @@ class Habstar(Base):
     johnson_mag = Column(Float)
     parallax_mas = Column(Float)
     b_minus_v = Column(Float)
+    dist_pc = Column(Float)
+    x_pc = Column(Float)
+    y_pc = Column(Float)
+    z_pc = Column(Float)
