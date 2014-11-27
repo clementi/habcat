@@ -54,13 +54,28 @@ def detail(id):
 @app.route('/find')
 def find():
     center_hipparchos_num = request.args.get('c')
-    dist_pc = request.args.get('d')
+    dist_pc = float(request.args.get('d'))
 
     center_habstar = Habstar.query.get(center_hipparchos_num)
 
-    habstars = Habstar.query.limit(25).all()
+    habstars = Habstar.query.all()
 
-    return render_template('find.html', dist_pc=dist_pc, center_hipparchos_num=center_hipparchos_num, habstars=habstars)
+    near_habstars = []
+    for habstar in habstars:
+        dist = distance(habstar, center_habstar)
+        if dist < dist_pc:
+            near_habstars.append(habstar)
+
+    return render_template(
+        'find.html', dist_pc=dist_pc, center_hipparchos_num=center_hipparchos_num, habstars=near_habstars)
+
+
+def distance(habstar1, habstar2):
+    import math
+    return math.sqrt(
+        (habstar1.x_pc - habstar2.x_pc) ** 2 +
+        (habstar1.y_pc - habstar2.y_pc) ** 2 +
+        (habstar1.z_pc - habstar2.z_pc) ** 2)
 
 
 @app.errorhandler(404)
