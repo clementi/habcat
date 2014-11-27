@@ -1,13 +1,48 @@
+{% set nav_bar = [
+    (url_for('home'), 'home', 'Browse'),
+    ('#', 'about', 'About'),
+    ('#', 'download', 'Download')
+] -%}
+{% set active_page = active_page | default('home') %}
+
 <!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %} - HabCat</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}"/>
-{#    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}"/>#}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}"/>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/app.js') }}"></script>
 </head>
 <body>
+    <nav class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ url_for('home') }}">HabCat</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="nav navbar-nav">
+                    {% for url, id, caption in nav_bar %}
+                        <li{% if id == active_page %} class="active"{% endif %}>
+                            <a href="{{ url | e }}">{{ caption | e }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     {% block content %}{% endblock %}
 </body>
 </html>

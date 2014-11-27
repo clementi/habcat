@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+{% set active_page = '' %}
+{% block content %}
+    <div class="container">
+        <h2>Habstars within {{ dist_pc }} pc of Hipparcos {{ center_hipparchos_num }}</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Hipparcos</th>
+                    <th>RA</th>
+                    <th>Dec</th>
+                    <th>Mag</th>
+                    <th>Dist (pc)</th>
+                    <th>x (pc)</th>
+                    <th>y (pc)</th>
+                    <th>z (pc)</th>
+                    <th>B &ndash; V</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for habstar in habstars %}
+                    <tr>
+                        <td><a href="{{ url_for('detail', id=habstar.hipparchos_num) }}">{{ habstar.hipparchos_num }}</a></td>
+                        <td>{{ "%02d" | format(habstar.ra_hours) }}<sup>h</sup>{{ "%02d" | format(habstar.ra_minutes) }}<sup>m</sup>{{ "%02.2f" | format(habstar.ra_seconds) }}<sup>s</sup></td>
+                        <td>{{ "%02d" | format(habstar.dec_degrees) }}&deg;{{ "%02d" | format(habstar.dec_minutes) }}'{{ "%02.2f" | format(habstar.dec_seconds) }}"</td>
+                        <td>{{ habstar.johnson_mag }}</td>
+                        <td>{{ "%.2f" | format(habstar.dist_pc) }}</td>
+                        <td>{{ "%.2f" | format(habstar.x_pc) }}</td>
+                        <td>{{ "%.2f" | format(habstar.y_pc) }}</td>
+                        <td>{{ "%.2f" | format(habstar.z_pc) }}</td>
+                        <td>{{ habstar.b_minus_v }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

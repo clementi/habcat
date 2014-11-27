@@ -1,19 +1,58 @@
 {% extends 'layout.html' %}
+{% set active_page = '' %}
 {% block title %}Hipparcos {{ habstar.hipparchos_num }}{% endblock %}
 {% block content %}
     <div class="container">
-        <h2>Hipparcos {{ habstar.hipparchos_num }}</h2>
-        <div class="form-horizontal">
-            <div class="form-group">
-                <span class="control-label col-sm-2">RA</span>
-                <div class="col-sm-10">
-                    <span class="form-control">{{ habstar.ra_hours }} {{ habstar.ra_minutes }} {{ habstar.ra_seconds }}</span>
-                </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <h2>Hipparcos {{ habstar.hipparchos_num }}</h2>
             </div>
-            <div class="form-group">
-                <span class="control-label col-sm-2">Dec</span>
-                <div class="col-sm-10">
-                    <span class="form-control">{{ habstar.dec_degrees }} {{ habstar.dec_minutes }} {{ habstar.dec_seconds }}</span>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <table class="table habstar">
+                    <tbody>
+                        <tr>
+                            <th>Right ascension</th>
+                            <td>{{ habstar.ra_hours }}<sup>h</sup>{{ habstar.ra_minutes }}<sup>m</sup>{{ habstar.ra_seconds }}<sup>s</sup></td>
+                        </tr>
+                        <tr>
+                            <th>Declination</th>
+                            <td>{{ habstar.dec_degrees }}&deg;{{ habstar.dec_minutes }}'{{ habstar.dec_seconds }}"</td>
+                        </tr>
+                        <tr>
+                            <th>Johnson magnitude</th>
+                            <td>{{ habstar.johnson_mag }}</td>
+                        </tr>
+                        <tr>
+                            <th>Parallax (mas)</th>
+                            <td>{{ habstar.parallax_mas }} &plusmn; {{ habstar.sigma_parallax_mas }}</td>
+                        </tr>
+                        <tr>
+                            <th>Distance (pc)</th>
+                            <td>{{ "%.2f" | format(habstar.dist_pc) }}</td>
+                        </tr>
+                        <tr>
+                            <th>Cartesian coordinates (pc)</th>
+                            <td>({{ "%.2f" | format(habstar.x_pc) }}, {{ "%.2f" | format(habstar.y_pc) }}, {{ "%.2f" | format(habstar.z_pc) }})</td>
+                        </tr>
+                        <tr>
+                            <th>B &ndash; V</th>
+                            <td>{{ habstar.b_minus_v }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Explore</div>
+                    <div class="panel-body">
+                        <ul>
+                            <li><a href="{{ url_for('find', c=habstar.hipparchos_num, d=10) }}">Find habstars within 10 pc</a></li>
+                            <li><a href="{{ url_for('find', c=habstar.hipparchos_num, d=10) }}">Find habstars of similar magnitude</a></li>
+                            <li><a href="{{ url_for('find', c=habstar.hipparchos_num, d=10) }}">Find habstars of similar color</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
