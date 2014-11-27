@@ -4,8 +4,17 @@ from sqlalchemy.orm import sessionmaker
 
 from models import Habstar
 
+import os
+import logging
 
 app = Flask(__name__)
+app.config.from_object(os.environ.get('APP_CONFIG_OBJECT') or 'config.Config')
+if app.debug:
+    app.logger.setLevel(logging.INFO)
+    app.logger.debug('Debug mode enabled.')
+else:
+    app.logger.setLevel(logging.WARN)
+
 engine = create_engine('sqlite:///./data/habcat.sqlite')
 Session = sessionmaker(bind=engine)
 
@@ -33,4 +42,5 @@ def not_found(error):
     return render_template('not_found.html'), 404
 
 
-app.run(debug=True)
+if app.debug:
+    app.run(host='0.0.0.0', port=9000)
