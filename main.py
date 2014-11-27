@@ -58,7 +58,7 @@ def find():
 
     center_habstar = Habstar.query.get(center_hipparchos_num)
 
-    habstars = Habstar.query.all()
+    habstars = Habstar.query.limit(25).all()
 
     return render_template('find.html', dist_pc=dist_pc, center_hipparchos_num=center_hipparchos_num, habstars=habstars)
 
