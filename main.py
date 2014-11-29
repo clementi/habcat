@@ -100,6 +100,11 @@ def distance(habstar1, habstar2):
         (habstar1.z_pc - habstar2.z_pc) ** 2)
 
 
+@app.route('/download')
+def download():
+    return render_template('download.html')
+
+
 @app.errorhandler(404)
 def not_found(error):
     return render_template('not_found.html'), 404
