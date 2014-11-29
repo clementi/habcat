@@ -59,12 +59,7 @@ def find():
     center_habstar = Habstar.query.get(center_hipparchos_num)
 
     habstars = Habstar.query.all()
-
-    near_habstars = []
-    for habstar in habstars:
-        dist = distance(habstar, center_habstar)
-        if dist < dist_pc:
-            near_habstars.append(habstar)
+    near_habstars = filter(lambda star: distance(center_habstar, star) < dist_pc, habstars)
 
     return render_template(
         'find.html', dist_pc=dist_pc, center_hipparchos_num=center_hipparchos_num, habstars=near_habstars)
