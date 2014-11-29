@@ -35,6 +35,31 @@ class Habstar(db.Model):
     z_pc = db.Column(db.Float)
 
 
+class NearHabstar(object):
+    def __init__(self, habstar, star):
+        self.star = star
+        self.hipparchos_num = habstar.hipparchos_num
+        self.ra_hours = habstar.ra_hours
+        self.ra_minutes = habstar.ra_minutes
+        self.ra_seconds = habstar.ra_seconds
+        self.dec_degrees = habstar.dec_degrees
+        self.dec_minutes = habstar.dec_minutes
+        self.dec_seconds = habstar.dec_seconds
+        self.johnson_mag = habstar.johnson_mag
+        self.parallax_mas = habstar.parallax_mas
+        self.sigma_parallax_mas = habstar.sigma_parallax_mas
+        self.b_minus_v = habstar.b_minus_v
+        self.dist_pc = habstar.dist_pc
+        self.x_pc = habstar.x_pc
+        self.y_pc = habstar.y_pc
+        self.z_pc = habstar.z_pc
+        self.dist_to_star = self._distance()
+
+    def _distance(self):
+        import math
+        return math.sqrt((self.x_pc - self.star.x_pc) ** 2 + (self.y_pc - self.star.y_pc) ** 2 + (self.z_pc - self.star.z_pc) ** 2)
+
+
 @app.route('/')
 def home():
     habstars = Habstar.query.limit(25).all()
@@ -59,7 +84,9 @@ def find():
     center_habstar = Habstar.query.get(center_hipparchos_num)
 
     habstars = Habstar.query.all()
-    near_habstars = filter(lambda star: distance(center_habstar, star) < dist_pc, habstars)
+    near_habstars = filter(
+        lambda near_habstar: 0 < near_habstar.dist_to_star < dist_pc,
+        map(lambda habstar: NearHabstar(habstar, center_habstar), habstars))
 
     return render_template(
         'find.html', dist_pc=dist_pc, center_hipparchos_num=center_hipparchos_num, habstars=near_habstars)
