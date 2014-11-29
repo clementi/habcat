@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+{% set active_page = 'download' %}
+{% block content %}
+    <div class="container">
+        <h2>Download the HabCat</h2>
+        <p>The HabCat is available in these formats:</p>
+        <ul>
+            <li><a href="http://iopscience.iop.org/0067-0049/145/1/181/fulltext/datafile4.txt">Original published fixed length text format</a></li>
+            <li><a href="http://www.hpcf.upr.edu/~abel/phl/habcat_table.csv">Excel CSV text file</a></li>
+            <li>SQLite: <a href="{{ url_for('static', filename='data/habcat.7z') }}">7-Zip archive</a> (1.2 MiB), <a href="{{ url_for('static', filename='data/habcat.sqlite.gz') }}">gzipped archive</a> (2.1 MiB)</li>
+        </ul>
+    </div>
+{% endblock %}
