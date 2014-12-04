@@ -62,18 +62,19 @@ class NearHabstar(object):
 
 @app.route('/')
 def home():
-    habstars = Habstar.query.limit(25).all()
+    page_arg = request.args.get('p') or '1'
+    page = int(page_arg)
+    items_per_page = 20
+
+    habstars = Habstar.query.paginate(page, items_per_page)
 
     return render_template('index.html', habstars=habstars)
 
 
 @app.route('/habstar/<id>')
 def detail(id):
-    habstar = Habstar.query.get(id)
-    if habstar:
-        return render_template('detail.html', habstar=habstar)
-    else:
-        abort(404)
+    habstar = Habstar.query.get_or_404(id)
+    return render_template('detail.html', habstar=habstar)
 
 
 @app.route('/find')

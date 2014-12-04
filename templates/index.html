@@ -18,7 +18,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for habstar in habstars %}
+                {% for habstar in habstars.items %}
                     <tr>
                         <td><a href="{{ url_for('detail', id=habstar.hipparchos_num) }}">{{ habstar.hipparchos_num }}</a></td>
                         <td>{{ "%02d" | format(habstar.ra_hours) }}<sup>h</sup>{{ "%02d" | format(habstar.ra_minutes) }}<sup>m</sup>{{ "%02.2f" | format(habstar.ra_seconds) }}<sup>s</sup></td>
@@ -33,5 +33,21 @@
                 {% endfor %}
             </tbody>
         </table>
+        {% macro render_pagination(pagination, endpoint) %}
+            <div class="pagination">Page:
+                {%- for page in pagination.iter_pages() %}
+                    {% if page %}
+                        {% if page != pagination.page %}
+                            <a href="{{ url_for(endpoint, p=page) }}">{{ page }}</a>
+                        {% else %}
+                            <strong>{{ page }}</strong>
+                        {% endif %}
+                    {% else %}
+                        <span class="ellipsis">&hellip;</span>
+                    {% endif %}
+                {%- endfor %}
+            </div>
+        {% endmacro %}
+        {{ render_pagination(habstars, 'home') }}
     </div>
 {% endblock %}
