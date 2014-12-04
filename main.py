@@ -79,18 +79,38 @@ def detail(id):
 
 @app.route('/find')
 def find():
-    center_hipparchos_num = request.args.get('c')
-    dist_pc = float(request.args.get('d'))
+    query_type = request.args.get('t')
 
-    center_habstar = Habstar.query.get(center_hipparchos_num)
+    reference_hipparchos_num = request.args.get('c')
+    reference_habstar = Habstar.query.get(reference_hipparchos_num)
 
     habstars = Habstar.query.all()
-    near_habstars = filter(
-        lambda near_habstar: 0 < near_habstar.dist_to_star < dist_pc,
-        map(lambda habstar: NearHabstar(habstar, center_habstar), habstars))
+
+    dist_pc = 0
+
+    if query_type.lower() == 'd':
+        dist_pc = float(request.args.get('d'))
+        filtered_habstars = filter(
+            lambda filtered_habstar: 0 < filtered_habstar.dist_to_star < dist_pc,
+            map(lambda habstar: NearHabstar(habstar, reference_habstar), habstars))
+        title = 'Habstars within {} pc of Hipparcos {}'.format(dist_pc, reference_hipparchos_num)
+    elif query_type.lower() == 'm':
+        reference_mag = reference_habstar.johnson_mag
+        upper_mag = reference_mag * 1.01
+        lower_mag = reference_mag * 0.99
+        filtered_habstars = filter(
+            lambda filtered_habstar: lower_mag < filtered_habstar.johnson_mag < upper_mag, habstars)
+        title = 'Habstars with similar magnitude to Hipparcos {}'.format(reference_hipparchos_num)
+    elif query_type.lower() == 'c':
+        reference_b_minus_v = reference_habstar.b_minus_v
+        upper_b_minus_v = reference_b_minus_v * 1.01
+        lower_b_minus_v = reference_b_minus_v * 0.99
+        filtered_habstars = filter(
+            lambda filtered_habstar: lower_b_minus_v < filtered_habstar.b_minus_v < upper_b_minus_v, habstars)
+        title = 'Habstars with similar color to Hipparcos {}'.format(reference_hipparchos_num)
 
     return render_template(
-        'find.html', dist_pc=dist_pc, center_hipparchos_num=center_hipparchos_num, habstars=near_habstars)
+        'find.html', title=title, center_hipparchos_num=reference_hipparchos_num, habstars=filtered_habstars)
 
 
 def distance(habstar1, habstar2):

@@ -48,9 +48,9 @@
                     <div class="panel-heading">Explore</div>
                     <div class="panel-body">
                         <ul>
-                            <li><a href="{{ url_for('find', c=habstar.hipparchos_num, d=10) }}">Find habstars within 10 pc</a></li>
-                            <li><a href="{{ url_for('find', c=habstar.hipparchos_num, d=10) }}">Find habstars of similar magnitude</a></li>
-                            <li><a href="{{ url_for('find', c=habstar.hipparchos_num, d=10) }}">Find habstars of similar color</a></li>
+                            <li><a href="{{ url_for('find', t='d', c=habstar.hipparchos_num, d=10) }}">Find habstars within 10 pc</a></li>
+                            <li><a href="{{ url_for('find', t='m', c=habstar.hipparchos_num) }}">Find habstars of similar magnitude</a></li>
+                            <li><a href="{{ url_for('find', t='c', c=habstar.hipparchos_num) }}">Find habstars of similar color</a></li>
                         </ul>
                     </div>
                 </div>

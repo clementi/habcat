@@ -1,8 +1,9 @@
 {% extends 'layout.html' %}
 {% set active_page = '' %}
+{% block title %}{{ title }}{% endblock %}
 {% block content %}
     <div class="container">
-        <h2>Habstars within {{ dist_pc }} pc of Hipparcos {{ center_hipparchos_num }}</h2>
+        <h2>{{ title }}</h2>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -11,7 +12,7 @@
                     <th>Dec</th>
                     <th>Mag</th>
                     <th>Dist (pc) to Sol</th>
-                    <th>Dist (pc) to HIP {{ center_hipparchos_num }}</th>
+{#                    <th>Dist (pc) to HIP {{ center_hipparchos_num }}</th>#}
                     <th>x (pc)</th>
                     <th>y (pc)</th>
                     <th>z (pc)</th>
@@ -26,7 +27,7 @@
                         <td>{{ "%02d" | format(habstar.dec_degrees) }}&deg;{{ "%02d" | format(habstar.dec_minutes) }}'{{ "%02.2f" | format(habstar.dec_seconds) }}"</td>
                         <td>{{ habstar.johnson_mag }}</td>
                         <td>{{ "%.2f" | format(habstar.dist_pc) }}</td>
-                        <td>{{ "%.2f" | format(habstar.dist_to_star) }}</td>
+{#                        <td>{{ "%.2f" | format(habstar.dist_to_star) }}</td>#}
                         <td>{{ "%.2f" | format(habstar.x_pc) }}</td>
                         <td>{{ "%.2f" | format(habstar.y_pc) }}</td>
                         <td>{{ "%.2f" | format(habstar.z_pc) }}</td>
