@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% set active_page = 'home' %}
+{% block content %}
+    <div class="jumbotron">
+        <div class="container">
+            <h1>The HabCat</h1>
+            <p>Find habitable stars in the Galaxy.</p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2>Find HabStars now.</h2>
+                <form class="form" action="/search" method="GET">
+                    <div class="input-group">
+                        <input type="text" name="s" class="form-control input-lg" placeholder="Hipparcos number">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-lg btn-primary">Search</button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

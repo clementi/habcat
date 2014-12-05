@@ -64,14 +64,18 @@ class NearHabstar(object):
 
 @app.route('/')
 def home():
+    return render_template('home.html')
+
+
+@app.route('/browse')
+def browse():
     page_arg = request.args.get('p') or '1'
     page = int(page_arg)
     items_per_page = 20
 
     habstars = Habstar.query.paginate(page, items_per_page)
 
-    return render_template('index.html', habstars=habstars)
-
+    return render_template('browse.html', habstars=habstars)
 
 @app.route('/habstar/<id>')
 def detail(id):
