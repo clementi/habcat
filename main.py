@@ -4,6 +4,7 @@ import logging
 from flask import Flask, render_template, request
 
 from flask.ext.sqlalchemy import SQLAlchemy
+from space import BoundingCube
 
 
 app = Flask(__name__)
@@ -96,9 +97,26 @@ def find():
 
     if query_type.lower() == 'd':
         dist_pc = float(request.args.get('d'))
+
+        center_coords = (reference_habstar.x_pc, reference_habstar.y_pc, reference_habstar.z_pc)
+        bounding_cube = BoundingCube(center_coords, dist_pc)
+
+        x_bounds = bounding_cube.get_x_bounds()
+        y_bounds = bounding_cube.get_y_bounds()
+        z_bounds = bounding_cube.get_z_bounds()
+
+        bounded_habstars = Habstar.query\
+            .filter(Habstar.x_pc > x_bounds[0])\
+            .filter(Habstar.x_pc < x_bounds[1])\
+            .filter(Habstar.y_pc > y_bounds[0])\
+            .filter(Habstar.y_pc < y_bounds[1])\
+            .filter(Habstar.z_pc > z_bounds[0])\
+            .filter(Habstar.z_pc < z_bounds[1])
+
         filtered_habstars = filter(
             lambda filtered_habstar: 0 < filtered_habstar.dist_to_star < dist_pc,
-            map(lambda habstar: NearHabstar(habstar, reference_habstar), Habstar.query.all()))
+            map(lambda habstar: NearHabstar(habstar, reference_habstar), bounded_habstars))
+
         title = 'Habstars within {} pc of Hipparcos {}'.format(dist_pc, reference_hipparchos_num)
     elif query_type.lower() == 'm':
         reference_mag = reference_habstar.johnson_mag
