@@ -57,7 +57,9 @@ class NearHabstar(object):
 
     def _distance(self):
         import math
-        return math.sqrt((self.x_pc - self.star.x_pc) ** 2 + (self.y_pc - self.star.y_pc) ** 2 + (self.z_pc - self.star.z_pc) ** 2)
+
+        return math.sqrt(
+            (self.x_pc - self.star.x_pc) ** 2 + (self.y_pc - self.star.y_pc) ** 2 + (self.z_pc - self.star.z_pc) ** 2)
 
 
 @app.route('/')
@@ -84,29 +86,27 @@ def find():
     reference_hipparchos_num = request.args.get('c')
     reference_habstar = Habstar.query.get(reference_hipparchos_num)
 
-    habstars = Habstar.query.all()
-
     dist_pc = 0
 
     if query_type.lower() == 'd':
         dist_pc = float(request.args.get('d'))
         filtered_habstars = filter(
             lambda filtered_habstar: 0 < filtered_habstar.dist_to_star < dist_pc,
-            map(lambda habstar: NearHabstar(habstar, reference_habstar), habstars))
+            map(lambda habstar: NearHabstar(habstar, reference_habstar), Habstar.query.all()))
         title = 'Habstars within {} pc of Hipparcos {}'.format(dist_pc, reference_hipparchos_num)
     elif query_type.lower() == 'm':
         reference_mag = reference_habstar.johnson_mag
         upper_mag = reference_mag * 1.01
         lower_mag = reference_mag * 0.99
-        filtered_habstars = filter(
-            lambda filtered_habstar: lower_mag < filtered_habstar.johnson_mag < upper_mag, habstars)
+        filtered_habstars = Habstar.query.filter(Habstar.johnson_mag < upper_mag).filter(
+            Habstar.johnson_mag > lower_mag)
         title = 'Habstars with similar magnitude to Hipparcos {}'.format(reference_hipparchos_num)
     elif query_type.lower() == 'c':
         reference_b_minus_v = reference_habstar.b_minus_v
         upper_b_minus_v = reference_b_minus_v * 1.01
         lower_b_minus_v = reference_b_minus_v * 0.99
-        filtered_habstars = filter(
-            lambda filtered_habstar: lower_b_minus_v < filtered_habstar.b_minus_v < upper_b_minus_v, habstars)
+        filtered_habstars = Habstar.query.filter(Habstar.b_minus_v < upper_b_minus_v).filter(
+            Habstar.b_minus_v > lower_b_minus_v)
         title = 'Habstars with similar color to Hipparcos {}'.format(reference_hipparchos_num)
 
     return render_template(
@@ -115,6 +115,7 @@ def find():
 
 def distance(habstar1, habstar2):
     import math
+
     return math.sqrt(
         (habstar1.x_pc - habstar2.x_pc) ** 2 +
         (habstar1.y_pc - habstar2.y_pc) ** 2 +
