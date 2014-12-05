@@ -1,8 +1,10 @@
-from flask import Flask, abort, render_template, request
-from flask.ext.sqlalchemy import SQLAlchemy
-
 import os
 import logging
+
+from flask import Flask, render_template, request
+
+from flask.ext.sqlalchemy import SQLAlchemy
+
 
 app = Flask(__name__)
 app.config.from_object(os.environ.get('APP_CONFIG_OBJECT') or 'config.Config')
