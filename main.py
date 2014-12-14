@@ -5,6 +5,7 @@ import requests
 from flask import Flask, render_template, request
 
 from flask.ext.sqlalchemy import SQLAlchemy
+from models import Paginated
 from space import BoundingCube
 
 
@@ -75,10 +76,9 @@ def home():
 def browse():
     page_arg = request.args.get('p') or '1'
     page = int(page_arg)
-    items_per_page = 20
 
     response = requests.get('http://habcat-api-twisted.herokuapp.com/?p={}'.format(page))
-    habstars = response.json()
+    habstars = Paginated(response.json())
 
     return render_template('browse.html', habstars=habstars)
 
