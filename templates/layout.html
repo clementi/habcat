@@ -5,27 +5,29 @@
     (url_for('download'), 'download', 'Download')
 ] -%}
 {% set active_page = active_page | default('home') %}
-{% macro render_pagination(pagination, endpoint) %}
+{% macro render_pagination(result, endpoint) %}
     <nav>
         <ul class="pagination">
-            {% if pagination.has_prev %}
-                <li><a href="{{ url_for(endpoint, p=pagination.page - 1) }}"><span aria-hidden="true">&laquo;</span><span class="sr-only">Prev</span></a></li>
+            {% set page = result.page | int %}
+            {% set total_pages = result.total_pages | int %}
+            {% if page > 1 %}
+                <li><a href="{{ url_for(endpoint, p=page - 1) }}"><span aria-hidden="true">&laquo;</span><span class="sr-only">Prev</span></a></li>
             {% else %}
                 <li class="disabled"><a href="#"><span aria-hidden="true">&laquo;</span><span class="sr-only">Prev</span></a></li>
             {% endif %}
-            {%- for page in pagination.iter_pages() %}
-                {% if page %}
-                    {% if page != pagination.page %}
-                        <li><a href="{{ url_for(endpoint, p=page) }}">{{ page }}</a></li>
+            {%- for p in range(1, total_pages + 1) %}
+                {% if page - 5 < p < page + 5 %}
+                    {% if p != page %}
+                        <li><a href="{{ url_for(endpoint, p=p) }}">{{ p }}</a></li>
                     {% else %}
-                        <li class="active"><a href="#">{{ page }}</a></li>
+                        <li class="active"><a href="#">{{ p }}</a></li>
                     {% endif %}
                 {% else %}
                     <li><span class="ellipsis">&hellip;</span></li>
                 {% endif %}
             {%- endfor %}
-        {% if pagination.has_next %}
-            <li><a href="{{ url_for(endpoint, p=pagination.page + 1) }}"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>
+        {% if page < total_pages %}
+            <li><a href="{{ url_for(endpoint, p=page + 1) }}"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>
         {% else %}
             <li class="disabled"><a href="#"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>
         {% endif %}
@@ -40,7 +42,6 @@
     <title>{% block title %}{% endblock %} - HabCat</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}"/>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-theme.min.css') }}"/>
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.4/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"/>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>

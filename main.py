@@ -1,5 +1,6 @@
 import os
 import logging
+import requests
 
 from flask import Flask, render_template, request
 
@@ -76,7 +77,8 @@ def browse():
     page = int(page_arg)
     items_per_page = 20
 
-    habstars = Habstar.query.paginate(page, items_per_page)
+    response = requests.get('http://habcat-api-twisted.herokuapp.com/?p={}'.format(page))
+    habstars = response.json()
 
     return render_template('browse.html', habstars=habstars)
 
