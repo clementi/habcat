@@ -78,7 +78,7 @@ def home():
 
 @app.route('/browse')
 def browse():
-    page_num = int((request.args.get('p') or ['1'])[0])
+    page_num = int(request.args.get('p') or '1')
     habstars = api_client.get_habstars(page_num)
 
     return render_template('browse.html', habstars=habstars)
