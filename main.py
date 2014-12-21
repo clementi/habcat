@@ -82,9 +82,9 @@ def browse():
 
     return render_template('browse.html', habstars=habstars)
 
-@app.route('/habstar/<id>')
-def detail(id):
-    response = requests.get('http://habcat-api-twisted.herokuapp.com/{}'.format(id))
+@app.route('/habstar/<hip_num>')
+def detail(hip_num):
+    response = requests.get('http://habcat-api-twisted.herokuapp.com/{}'.format(hip_num))
     if response.status_code == 404:
         abort(404)
     habstar = response.json()
