@@ -84,7 +84,6 @@ def browse():
 
 @app.route('/habstar/<id>')
 def detail(id):
-    # habstar = Habstar.query.get_or_404(id)
     response = requests.get('http://habcat-api-twisted.herokuapp.com/{}'.format(id))
     if response.status_code == 404:
         abort(404)
