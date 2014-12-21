@@ -2,7 +2,7 @@ import os
 import logging
 import requests
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, abort
 
 from flask.ext.sqlalchemy import SQLAlchemy
 from models import Paginated
@@ -86,6 +86,8 @@ def browse():
 def detail(id):
     # habstar = Habstar.query.get_or_404(id)
     response = requests.get('http://habcat-api-twisted.herokuapp.com/{}'.format(id))
+    if response.status_code == 404:
+        abort(404)
     habstar = response.json()
 
     return render_template('detail.html', habstar=habstar)
