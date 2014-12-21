@@ -18,4 +18,6 @@ class HabstarClient(object):
 
     def get_habstars_by_distance(self, hip_num, dist=10, page_num=1):
         response = requests.get(self.base_url + '/?a=dist&p={}&r={}&d={}'.format(page_num, hip_num, dist))
-        return Paginated(response.json())
+        paginated = Paginated(response.json())
+        paginated.items.sort(lambda x, y: cmp(float(x['ref_dist_pc']), float(y['ref_dist_pc'])))
+        return paginated
