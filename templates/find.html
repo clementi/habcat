@@ -12,7 +12,7 @@
                     <th>Dec</th>
                     <th>Mag</th>
                     <th>Dist (pc) to Sol</th>
-{#                    <th>Dist (pc) to HIP {{ center_hipparchos_num }}</th>#}
+                    <th>Dist (pc) to HIP {{ center_hipparchos_num }}</th>
                     <th>x (pc)</th>
                     <th>y (pc)</th>
                     <th>z (pc)</th>
@@ -27,7 +27,7 @@
                         <td>{{ "%02d" | format(habstar.loc_cel.dec[0]) }}&deg;{{ "%02d" | format(habstar.loc_cel.dec[1]) }}'{{ "%02.2f" | format(habstar.loc_cel.dec[2]) }}"</td>
                         <td>{{ habstar.mag }}</td>
                         <td>{{ "%.2f" | format(habstar.dist_pc) }}</td>
-{#                        <td>{{ "%.2f" | format(habstar.dist_to_star) }}</td>#}
+                        <td>{{ "%.2f" | format(habstar.ref_dist_pc) }}</td>
                         <td>{{ "%.2f" | format(habstar.loc_cart_pc[0]) }}</td>
                         <td>{{ "%.2f" | format(habstar.loc_cart_pc[1]) }}</td>
                         <td>{{ "%.2f" | format(habstar.loc_cart_pc[2]) }}</td>
