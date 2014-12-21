@@ -1,4 +1,5 @@
 import requests
+from models import Paginated
 
 
 class HabstarClient(object):
@@ -10,3 +11,7 @@ class HabstarClient(object):
         if response.status_code == 404:
             return None
         return response.json()
+
+    def get_habstars(self, page_num):
+        response = requests.get(self.base_url + '/?p={}'.format(page_num))
+        return Paginated(response.json())

@@ -78,11 +78,8 @@ def home():
 
 @app.route('/browse')
 def browse():
-    page_arg = request.args.get('p') or '1'
-    page = int(page_arg)
-
-    response = requests.get('http://habcat-api-twisted.herokuapp.com/?p={}'.format(page))
-    habstars = Paginated(response.json())
+    page_num = int((request.args.get('p') or ['1'])[0])
+    habstars = api_client.get_habstars(page_num)
 
     return render_template('browse.html', habstars=habstars)
 

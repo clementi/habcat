@@ -21,7 +21,7 @@
             <tbody>
                 {% for habstar in habstars.items %}
                     <tr>
-                        <td><a href="{{ url_for('detail', id=habstar.hip) }}">{{ habstar.hip }}</a></td>
+                        <td><a href="{{ url_for('detail', hip_num=habstar.hip) }}">{{ habstar.hip }}</a></td>
                         <td>{{ "%02d" | format(habstar.loc_cel.ra[0]) }}<sup>h</sup>{{ "%02d" | format(habstar.loc_cel.ra[1]) }}<sup>m</sup>{{ "%02.2f" | format(habstar.loc_cel.ra[2]) }}<sup>s</sup></td>
                         <td>{{ "%02d" | format(habstar.loc_cel.dec[0]) }}&deg;{{ "%02d" | format(habstar.loc_cel.dec[1]) }}'{{ "%02.2f" | format(habstar.loc_cel.dec[2]) }}"</td>
                         <td>{{ habstar.mag }}</td>
