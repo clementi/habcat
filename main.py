@@ -84,7 +84,10 @@ def browse():
 
 @app.route('/habstar/<id>')
 def detail(id):
-    habstar = Habstar.query.get_or_404(id)
+    # habstar = Habstar.query.get_or_404(id)
+    response = requests.get('http://habcat-api-twisted.herokuapp.com/{}'.format(id))
+    habstar = response.json()
+
     return render_template('detail.html', habstar=habstar)
 
 

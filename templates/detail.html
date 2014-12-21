@@ -1,11 +1,11 @@
 {% extends 'layout.html' %}
 {% set active_page = '' %}
-{% block title %}Hipparcos {{ habstar.hipparchos_num }}{% endblock %}
+{% block title %}Hipparcos {{ habstar.hip }}{% endblock %}
 {% block content %}
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
-                <h2>Hipparcos {{ habstar.hipparchos_num }}</h2>
+                <h2>Hipparcos {{ habstar.hip }}</h2>
             </div>
         </div>
         <div class="row">
@@ -14,19 +14,19 @@
                     <tbody>
                         <tr>
                             <th>Right ascension</th>
-                            <td>{{ habstar.ra_hours }}<sup>h</sup>{{ habstar.ra_minutes }}<sup>m</sup>{{ habstar.ra_seconds }}<sup>s</sup></td>
+                            <td>{{ habstar.loc_cel.ra[0] }}<sup>h</sup>{{ habstar.loc_cel.ra[1] }}<sup>m</sup>{{ habstar.loc_cel.ra[2] }}<sup>s</sup></td>
                         </tr>
                         <tr>
                             <th>Declination</th>
-                            <td>{{ habstar.dec_degrees }}&deg;{{ habstar.dec_minutes }}'{{ habstar.dec_seconds }}"</td>
+                            <td>{{ habstar.loc_cel.dec[0] }}&deg;{{ habstar.loc_cel.dec[1] }}'{{ habstar.loc_cel.dec[2] }}"</td>
                         </tr>
                         <tr>
                             <th>Johnson magnitude</th>
-                            <td>{{ habstar.johnson_mag }}</td>
+                            <td>{{ habstar.mag }}</td>
                         </tr>
                         <tr>
                             <th>Parallax (mas)</th>
-                            <td>{{ habstar.parallax_mas }} &plusmn; {{ habstar.sigma_parallax_mas }}</td>
+                            <td>{{ habstar.parx_mas.v }} &plusmn; {{ habstar.parx_mas.s }}</td>
                         </tr>
                         <tr>
                             <th>Distance (pc)</th>
@@ -34,11 +34,11 @@
                         </tr>
                         <tr>
                             <th>Cartesian coordinates (pc)</th>
-                            <td>({{ "%.2f" | format(habstar.x_pc) }}, {{ "%.2f" | format(habstar.y_pc) }}, {{ "%.2f" | format(habstar.z_pc) }})</td>
+                            <td>({{ "%.2f" | format(habstar.loc_cart_pc[0]) }}, {{ "%.2f" | format(habstar.loc_cart_pc[1]) }}, {{ "%.2f" | format(habstar.loc_cart_pc[2]) }})</td>
                         </tr>
                         <tr>
                             <th>B &ndash; V</th>
-                            <td>{{ habstar.b_minus_v }}</td>
+                            <td>{{ habstar.bmv.v }} &plusmn; {{ habstar.bmv.s }}</td>
                         </tr>
                     </tbody>
                 </table>
