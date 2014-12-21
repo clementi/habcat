@@ -20,21 +20,22 @@
                 </tr>
             </thead>
             <tbody>
-                {% for habstar in habstars %}
+                {% for habstar in habstars.items %}
                     <tr>
-                        <td><a href="{{ url_for('detail', id=habstar.hipparchos_num) }}">{{ habstar.hipparchos_num }}</a></td>
-                        <td>{{ "%02d" | format(habstar.ra_hours) }}<sup>h</sup>{{ "%02d" | format(habstar.ra_minutes) }}<sup>m</sup>{{ "%02.2f" | format(habstar.ra_seconds) }}<sup>s</sup></td>
-                        <td>{{ "%02d" | format(habstar.dec_degrees) }}&deg;{{ "%02d" | format(habstar.dec_minutes) }}'{{ "%02.2f" | format(habstar.dec_seconds) }}"</td>
-                        <td>{{ habstar.johnson_mag }}</td>
+                        <td><a href="{{ url_for('detail', hip_num=habstar.hip) }}">{{ habstar.hip}}</a></td>
+                        <td>{{ "%02d" | format(habstar.loc_cel.ra[0]) }}<sup>h</sup>{{ "%02d" | format(habstar.loc_cel.ra[1]) }}<sup>m</sup>{{ "%02.2f" | format(habstar.loc_cel.ra[2]) }}<sup>s</sup></td>
+                        <td>{{ "%02d" | format(habstar.loc_cel.dec[0]) }}&deg;{{ "%02d" | format(habstar.loc_cel.dec[1]) }}'{{ "%02.2f" | format(habstar.loc_cel.dec[2]) }}"</td>
+                        <td>{{ habstar.mag }}</td>
                         <td>{{ "%.2f" | format(habstar.dist_pc) }}</td>
 {#                        <td>{{ "%.2f" | format(habstar.dist_to_star) }}</td>#}
-                        <td>{{ "%.2f" | format(habstar.x_pc) }}</td>
-                        <td>{{ "%.2f" | format(habstar.y_pc) }}</td>
-                        <td>{{ "%.2f" | format(habstar.z_pc) }}</td>
-                        <td>{{ habstar.b_minus_v }}</td>
+                        <td>{{ "%.2f" | format(habstar.loc_cart_pc[0]) }}</td>
+                        <td>{{ "%.2f" | format(habstar.loc_cart_pc[1]) }}</td>
+                        <td>{{ "%.2f" | format(habstar.loc_cart_pc[2]) }}</td>
+                        <td>{{ habstar.bmv.v }} &plusmn; {{ habstar.bmv.s }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+{#        {{ render_pagination(habstars, 'find') }}#}
     </div>
 {% endblock %}

@@ -92,34 +92,15 @@ def detail(hip_num):
 @app.route('/find')
 def find():
     query_type = request.args.get('t')
+    page_num = int(request.args.get('p') or '1')
 
     reference_hipparchos_num = request.args.get('c')
     reference_habstar = Habstar.query.get(reference_hipparchos_num)
 
-    dist_pc = 0
-
     if query_type.lower() == 'd':
         dist_pc = float(request.args.get('d'))
 
-        center_coords = (reference_habstar.x_pc, reference_habstar.y_pc, reference_habstar.z_pc)
-        bounding_cube = BoundingCube(center_coords, dist_pc)
-
-        x_bounds = bounding_cube.get_x_bounds()
-        y_bounds = bounding_cube.get_y_bounds()
-        z_bounds = bounding_cube.get_z_bounds()
-
-        bounded_habstars = Habstar.query\
-            .filter(Habstar.x_pc > x_bounds[0])\
-            .filter(Habstar.x_pc < x_bounds[1])\
-            .filter(Habstar.y_pc > y_bounds[0])\
-            .filter(Habstar.y_pc < y_bounds[1])\
-            .filter(Habstar.z_pc > z_bounds[0])\
-            .filter(Habstar.z_pc < z_bounds[1])
-
-        filtered_habstars = filter(
-            lambda filtered_habstar: 0 < filtered_habstar.dist_to_star < dist_pc,
-            map(lambda habstar: NearHabstar(habstar, reference_habstar), bounded_habstars))
-
+        filtered_habstars = api_client.get_habstars_by_distance(reference_hipparchos_num, dist_pc, page_num)
         title = 'Habstars within {} pc of Hipparcos {}'.format(dist_pc, reference_hipparchos_num)
     elif query_type.lower() == 'm':
         reference_mag = reference_habstar.johnson_mag
@@ -138,15 +119,6 @@ def find():
 
     return render_template(
         'find.html', title=title, center_hipparchos_num=reference_hipparchos_num, habstars=filtered_habstars)
-
-
-def distance(habstar1, habstar2):
-    import math
-
-    return math.sqrt(
-        (habstar1.x_pc - habstar2.x_pc) ** 2 +
-        (habstar1.y_pc - habstar2.y_pc) ** 2 +
-        (habstar1.z_pc - habstar2.z_pc) ** 2)
 
 
 @app.route('/download')

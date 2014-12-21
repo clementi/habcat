@@ -12,6 +12,10 @@ class HabstarClient(object):
             return None
         return response.json()
 
-    def get_habstars(self, page_num):
+    def get_habstars(self, page_num=1):
         response = requests.get(self.base_url + '/?p={}'.format(page_num))
+        return Paginated(response.json())
+
+    def get_habstars_by_distance(self, hip_num, dist=10, page_num=1):
+        response = requests.get(self.base_url + '/?a=dist&p={}&r={}&d={}'.format(page_num, hip_num, dist))
         return Paginated(response.json())
