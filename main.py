@@ -1,12 +1,9 @@
 import os
 import logging
-import requests
-
 from flask import Flask, render_template, request, abort
-
 from flask.ext.sqlalchemy import SQLAlchemy
+
 from api import HabstarClient
-from models import Paginated
 from space import BoundingCube
 
 
