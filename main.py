@@ -5,9 +5,13 @@ import requests
 from flask import Flask, render_template, request, abort
 
 from flask.ext.sqlalchemy import SQLAlchemy
+from api import HabstarClient
 from models import Paginated
 from space import BoundingCube
 
+
+API_BASE_URL = 'http://habcat-api-twisted.herokuapp.com'
+api_client = HabstarClient(API_BASE_URL)
 
 app = Flask(__name__)
 app.config.from_object(os.environ.get('APP_CONFIG_OBJECT') or 'config.Config')
@@ -84,10 +88,9 @@ def browse():
 
 @app.route('/habstar/<hip_num>')
 def detail(hip_num):
-    response = requests.get('http://habcat-api-twisted.herokuapp.com/{}'.format(hip_num))
-    if response.status_code == 404:
+    habstar = api_client.get_habstar(hip_num)
+    if not habstar:
         abort(404)
-    habstar = response.json()
 
     return render_template('detail.html', habstar=habstar)
 
