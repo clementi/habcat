@@ -21,3 +21,15 @@ class HabstarClient(object):
         paginated = Paginated(response.json())
         paginated.items.sort(lambda x, y: cmp(float(x['ref_dist_pc']), float(y['ref_dist_pc'])))
         return paginated
+
+    def get_habstars_with_similar_magnitude_to(self, magnitude, page_num=1):
+        response = requests.get(self.base_url + '/?a=similar_mag&m={}&p={}'.format(magnitude, page_num))
+        paginated = Paginated(response.json())
+        paginated.items.sort(lambda x, y: cmp(float(x['mag']), float(y['mag'])))
+        return paginated
+
+    def get_habstars_with_similar_color_to(self, b_minus_v, page_num=1):
+        response = requests.get(self.base_url + '/?a=similar_color&c={}&p={}'.format(b_minus_v, page_num))
+        paginated = Paginated(response.json())
+        paginated.items.sort(lambda x, y: cmp(float(x['bmv']['v']), float(y['bmv']['v'])))
+        return paginated

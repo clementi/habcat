@@ -103,17 +103,13 @@ def find():
         title = 'Habstars within {} pc of Hipparcos {}'.format(dist_pc, reference_hipparchos_num)
     elif query_type.lower() == 'm':
         reference_mag = reference_habstar.johnson_mag
-        upper_mag = reference_mag * 1.01
-        lower_mag = reference_mag * 0.99
-        filtered_habstars = Habstar.query.filter(Habstar.johnson_mag < upper_mag).filter(
-            Habstar.johnson_mag > lower_mag)
+
+        filtered_habstars = api_client.get_habstars_with_similar_magnitude_to(reference_mag, page_num)
         title = 'Habstars with similar magnitude to Hipparcos {}'.format(reference_hipparchos_num)
     elif query_type.lower() == 'c':
         reference_b_minus_v = reference_habstar.b_minus_v
-        upper_b_minus_v = reference_b_minus_v * 1.01
-        lower_b_minus_v = reference_b_minus_v * 0.99
-        filtered_habstars = Habstar.query.filter(Habstar.b_minus_v < upper_b_minus_v).filter(
-            Habstar.b_minus_v > lower_b_minus_v)
+
+        filtered_habstars = api_client.get_habstars_with_similar_color_to(reference_b_minus_v, page_num)
         title = 'Habstars with similar color to Hipparcos {}'.format(reference_hipparchos_num)
 
     return render_template(
