@@ -4,7 +4,6 @@ from flask import Flask, render_template, request, abort
 from flask.ext.sqlalchemy import SQLAlchemy
 
 from api import HabstarClient
-from space import BoundingCube
 
 
 API_BASE_URL = 'http://habcat-api-twisted.herokuapp.com'
